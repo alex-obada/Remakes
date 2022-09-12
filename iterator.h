@@ -2,14 +2,14 @@
 
 namespace cox {
 
-	template <typename Container>
+	template <class Container>
 	class Iterator {
 	public:
 
-		using pointer	      = typename Container::pointer;			/// T*
-		using node_pointer    = typename Container::node_pointer;		/// Node*
-		using reference	      = typename Container::reference;			/// T&
-		using const_reference = typename Container::const_reference;    /// const T&
+		using pointer	      = Container::pointer;			/// T*
+		using node_pointer    = Container::node_pointer;		/// Node*
+		using reference	      = Container::reference;			/// T&
+		using const_reference = Container::const_reference;    /// const T&
 
 		Iterator(Container& c, node_pointer ptr) :
 			c {c}, ptr {ptr} 
@@ -40,6 +40,11 @@ namespace cox {
 		bool operator == (Iterator const& other) const noexcept
 		{
 			return ptr == other.ptr;
+		}
+
+		node_pointer GetPtr() const noexcept
+		{
+			return ptr;
 		}
 
 	private:

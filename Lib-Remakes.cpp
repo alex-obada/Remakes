@@ -18,34 +18,34 @@ using namespace std;
 int main()
 {
 
-    cox::List<int> a;
+    cox::List<int> a, b;
     
   
 
     for (int i = 1; i < 20; ++i)
         a.push_back(i);
 
+    //for (int i = 20; i < 40; ++i)
+    //    b.push_back(i);
+    //
+    //a.swap(b);
 
-
-    for (auto it = --a.end(); 1; --it)
+    for (auto& x : a)
     {
-        LOG(*it);
-        if (it == a.begin()) break;
+        LOG(x);
     }
-    /*for (auto it = a.begin();
-        it != a.end(); ++it)
-    {
-
-        
-        LOG(*it);
-    }
+    a.erase(++a.begin());
     std::cout << '\n';
     for (auto& x : a)
     {
         LOG(x);
-    }*/
+    }
 
 
+    //cox::List<int>* p = &a;
+
+    //(* p).Empty
+    //p->
 
 
 

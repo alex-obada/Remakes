@@ -138,7 +138,6 @@
     <ClInclude Include="iterator.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="matrix.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="string.h" />
   </ItemGroup>
   <ItemGroup>

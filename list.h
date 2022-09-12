@@ -2,8 +2,7 @@
 #include <iostream>
 #include "iterator.h"
 
-namespace cox
-{
+namespace cox {
 
 	template<typename T>
 	class List {
@@ -103,6 +102,7 @@ namespace cox
 			return ptr->data;
 		}
 
+
 		// Element acces
 
 		const_reference front() const
@@ -114,6 +114,7 @@ namespace cox
 		{
 			return last->data;
 		}
+
 
 		// Capacity
 
@@ -132,89 +133,17 @@ namespace cox
 			return !this->Empty();
 		}
 
-
+		
 		// Modifiers
 
-		void erase(Node* p)
+		iterator insert(iterator pos, const_reference value)
 		{
-			if (!p || !first) return;
-
-			if (first->next == nullptr)
-			{
-				delete first;
-				first = last = nullptr;
-				nr = 0;
-				return;
-			}
-
-			if (p == first)
-			{
-				first = first->next;
-				delete p;
-				first->prev = nullptr;
-				nr--;
-				return;
-			}
-
-			if (p == last)
-			{
-				last = last->prev;
-				last->next = nullptr;
-				delete p;
-				nr--;
-				return;
-			}
-
-			p->prev->next = p->next;
-			p->next->prev = p->prev;
-			nr--;
-			delete p;
+			return iterator(*this, insertBefore(pos.GetPtr(), value));
 		}
 
-		void insertAfter(Node* p, const_reference val)
+		iterator erase(iterator pos)
 		{
-			if (first == nullptr && p == nullptr)
-			{
-				first = last = new Node(nullptr, val, nullptr);
-				nr++;
-				return;
-			}
-
-			if (p == nullptr) return;
-
-			if (p->next == nullptr)
-			{
-				last = last->next = new Node(last, val, nullptr);
-				nr++;
-				return;
-			}
-
-			nr++;
-			p->next = new Node(p, val, p->next);
-			p->next->next->prev = p->next;
-		}
-
-		void insertBefore(Node* p, const_reference val)
-		{
-			if (first == nullptr && p == nullptr)
-			{
-				first = last = new Node(nullptr, val, nullptr);
-				nr++;
-				return;
-			}
-
-			if (p == nullptr) return;
-
-			if (p == first)
-			{
-				first = first->prev = new Node(nullptr, val, first);
-				nr++;
-				return;
-			}
-
-			nr++;
-			p->prev = new Node(p->prev, val, p);
-			p->prev->prev->next = p->prev;
+			return iterator(*this, erase(pos.GetPtr()));
 		}
 
 		void clear()
@@ -222,6 +151,13 @@ namespace cox
 			Free();
 		}
 
+		void swap(List& other)
+		{
+			std::swap(first, other.first);
+			std::swap(last, other.last);
+			std::swap(nr, other.nr);
+
+		}
 
 		void push_back(const_reference x) noexcept
 		{
@@ -243,9 +179,103 @@ namespace cox
 			erase(first);
 		}
 
-
-
 	private:
+
+		Node* erase(Node* p)
+		{
+			if (!p || !first) return nullptr;
+
+
+			// 1 element in list
+			if (first->next == nullptr)
+			{
+				delete first;
+				first = last = nullptr;
+				nr = 0;
+				return nullptr;
+			}
+
+			// first element
+			if (p == first)
+			{
+				first = first->next;
+				delete p;
+				first->prev = nullptr;
+				nr--;
+				return first;
+			}
+
+			// last element
+			if (p == last)
+			{
+				last = last->prev;
+				last->next = nullptr;
+				delete p;
+				nr--;
+				return nullptr;
+			}
+
+			// general case
+			Node* tail = p->next;
+			p->prev->next = p->next;
+			p->next->prev = p->prev;
+			nr--;
+			delete p;
+
+			return tail;
+
+		}
+
+		void insertAfter(Node* p, const_reference val)
+		{
+			// empty list
+			if (first == nullptr && p == nullptr)
+			{
+				first = last = new Node(nullptr, val, nullptr);
+				nr++;
+				return;
+			}
+
+			// 1 element
+			if (p->next == nullptr)
+			{
+				last = last->next = new Node(last, val, nullptr);
+				nr++;
+				return;
+			}
+
+			// general case
+			nr++;
+			p->next = new Node(p, val, p->next);
+			p->next->next->prev = p->next;
+		}
+
+		Node* insertBefore(Node* p, const_reference val)
+		{
+			
+			// empty list
+			if (first == nullptr && p == nullptr)
+			{
+				first = last = new Node(nullptr, val, nullptr);
+				nr++;
+				return first;
+			}
+
+			// 1 element
+			if (p == first)
+			{
+				first = first->prev = new Node(nullptr, val, first);
+				nr++;
+				return first;
+			}
+
+			// general case
+			nr++;
+			p->prev = new Node(p->prev, val, p);
+			p->prev->prev->next = p->prev;
+			return p->prev;
+		}
+
 
 		void Free()
 		{

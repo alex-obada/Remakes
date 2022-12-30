@@ -10,43 +10,46 @@
 #include "matrix.h"
 #include <list>
 #endif
+#include "matrix.h"
 #include "list.h"
+#include <vector>
 
-#define LOG(x) std::cout << x << ' '
+using namespace cox;
 
-using namespace std;
+
+
+#define LOG(x) std::cout << x << ' ';
+
 int main()
 {
+    Matrix m(4, 3, 7);
 
-    cox::List<int> a, b;
+
+    int cnt{ 1 };
+    for (size_t i = 0; i < m.GetLines(); ++i, std::cout << '\n')
+        for (size_t j = 0; j < m.GetColumns(); ++j)
+        {
+            m[i][j] = cnt++;
+            LOG(m[i][j]);
+        }
+    LOG("\n\n");
+
+    auto a = Matrix::GetTransposed(m);
+    auto b = Matrix::GetUnitMatrix(4);
+
+    LOG(b);
+    LOG("\n" << Matrix::GetTrace(b));
     
-  
-
-    for (int i = 1; i < 20; ++i)
-        a.push_back(i);
-
-    //for (int i = 20; i < 40; ++i)
-    //    b.push_back(i);
-    //
-    //a.swap(b);
-
-    for (auto& x : a)
-    {
-        LOG(x);
-    }
-    a.erase(++a.begin());
-    std::cout << '\n';
-    for (auto& x : a)
-    {
-        LOG(x);
-    }
+    /*
+    //LOG(asd);
+    //LOG("\n\n");
 
 
-    //cox::List<int>* p = &a;
-
-    //(* p).Empty
-    //p->
-
+    //for (size_t i = 0; i < m.GetLines(); ++i, std::cout << '\n')
+    //    for (size_t j = 0; j < m.GetColumns(); ++j)
+    //        LOG(asd[i][j]);
+    
+    */
 
 
 }
@@ -171,3 +174,30 @@ LOG(a);
 LOG(b);
 LOG(c);
 return 0;*/
+
+/*
+for (int i = 1; i < 20; ++i)
+    a.push_back(std::move(i));
+
+//for (int i = 20; i < 40; ++i)
+//    b.push_back(i);
+//
+//a.swap(b);
+
+for (auto& x : a)
+{
+    LOG(x);
+}
+a.erase(++a.begin());
+std::cout << '\n';
+for (auto& x : a)
+{
+    LOG(x);
+}
+
+
+//cox::List<int>* p = &a;
+
+//(* p).Empty
+//p->
+*/

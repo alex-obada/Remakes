@@ -130,14 +130,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="fractie.cpp" />
-    <ClCompile Include="Lib-Remakes.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="matrix.cpp" />
     <ClCompile Include="string.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fractie.h" />
-    <ClInclude Include="iterator.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="list_iterator.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="matrix.h" />
+    <ClInclude Include="matrix_iterator.h" />
     <ClInclude Include="string.h" />
   </ItemGroup>
   <ItemGroup>

@@ -7,76 +7,79 @@
     #define __PRETTY_FUNCTION__ __FUNCSIG__
 #endif
 
+#include "globals.h"
 #include <iostream>
 
-namespace cox {
+COX_BEGIN_NAMESPACE
 
-    int Cmmdc(int a, int b);
-    int Cmmmc(int a, int b);
 
-    class Fractie {
-    public:
-        Fractie(int numarator, int numitor);
+class Fractie {
+public:
+    Fractie(int numarator, int numitor);
 
-        void SimplificareFr() noexcept;
+    void SimplificareFr() noexcept;
 
-        // Settere si Getere
+    // Settere si Getere
 
-        void SetNumarator(int numarator) noexcept;
-        int GetNumarator() const noexcept;
-        void SetNumitor(int numitor) noexcept;
-        int GetNumitor() const noexcept;
+    void SetNumarator(int numarator) noexcept;
+    int GetNumarator() const noexcept;
+    void SetNumitor(int numitor) noexcept;
+    int GetNumitor() const noexcept;
 
-        // op unari
+    // op unari
 
-        Fractie& operator ++ () noexcept;
-        Fractie operator ++ (int) noexcept;
+    Fractie& operator ++ () noexcept;
+    Fractie operator ++ (int) noexcept;
 
-        // op aritmetici
+    // op aritmetici
 
-        Fractie operator + (const Fractie& x) const noexcept;
-        Fractie operator - (const Fractie& x) const noexcept;
-        Fractie operator * (const Fractie& x) const noexcept;
-        Fractie operator / (const Fractie& x) const noexcept;
+    Fractie operator + (const Fractie& x) const noexcept;
+    Fractie operator - (const Fractie& x) const noexcept;
+    Fractie operator * (const Fractie& x) const noexcept;
+    Fractie operator / (const Fractie& x) const noexcept;
 
-        Fractie operator + (int nr) const noexcept;
-        Fractie operator - (int nr) const noexcept;
-        Fractie operator * (int nr) const noexcept;
-        Fractie operator / (int nr) const noexcept;
+    Fractie operator + (int nr) const noexcept;
+    Fractie operator - (int nr) const noexcept;
+    Fractie operator * (int nr) const noexcept;
+    Fractie operator / (int nr) const noexcept;
 
-        // assigment operator
+    // assigment operator
 
-        Fractie& operator  = (Fractie& x) noexcept;
-        Fractie& operator += (Fractie& x) noexcept;
-        Fractie& operator -= (Fractie& x) noexcept;
-        Fractie& operator *= (Fractie& x) noexcept;
-        Fractie& operator /= (Fractie& x) noexcept;
+    Fractie& operator  = (Fractie const& x) noexcept;
+    Fractie& operator += (Fractie const& x) noexcept;
+    Fractie& operator -= (Fractie const& x) noexcept;
+    Fractie& operator *= (Fractie const& x) noexcept;
+    Fractie& operator /= (Fractie const& x) noexcept;
 
-        Fractie& operator  = (int nr) noexcept;
-        Fractie& operator += (int nr) noexcept;
-        Fractie& operator -= (int nr) noexcept;
-        Fractie& operator *= (int nr) noexcept;
-        Fractie& operator /= (int nr) noexcept;
+    Fractie& operator  = (int nr) noexcept;
+    Fractie& operator += (int nr) noexcept;
+    Fractie& operator -= (int nr) noexcept;
+    Fractie& operator *= (int nr) noexcept;
+    Fractie& operator /= (int nr) noexcept;
 
-        // logic operators
+    // logic operators
 
-        std::strong_ordering operator <=> (Fractie const& x) const noexcept;
-        bool operator == (const Fractie& x) const noexcept;
-        bool operator != (const Fractie& x) const noexcept;
+    std::strong_ordering operator <=> (Fractie const& x) const noexcept;
+    bool operator == (const Fractie& x) const noexcept;
+    bool operator != (const Fractie& x) const noexcept;
 
-        // stream
-        friend std::ostream& operator << (std::ostream& out, const Fractie& x);
-        friend std::istream& operator >> (std::istream& in, Fractie& x);
+    // stream
+    friend std::ostream& operator << (std::ostream& out, const Fractie& x);
+    friend std::istream& operator >> (std::istream& in, Fractie& x);
 
-    private:
-        int numarator;
-        int numitor;
+private:
+    int numarator;
+    int numitor;
 
-        void SimplificareFr(int& a, int& b);
-    };
+    void SimplificareFr(int& a, int& b);
 
+    static int Cmmdc(int a, int b);
+    static int Cmmmc(int a, int b);
     static int NrCifre(int n);
 
 };
+
+COX_END_NAMESPACE
+
 
 #endif

@@ -1,104 +1,96 @@
 #pragma once
 
+#include "globals.h"
 #include <iostream>
+#include <cmath>
+#include <algorithm>
 
-namespace cox {
+#include "matrix_iterator.h"
 
-    template<typename T> class Matrix {
-    public:
-
-        Matrix() : n{ 0 }, m{ 0 }, a{ nullptr }, n_alloc{ 0 }
-        {}
-
-        Matrix(size_t n, size_t m, T val = T()) : 
-            n{ n }, m{ m }, n_alloc{ 0 }
-        {
-            if (n && m)
-            {
-                Alloc();
-                for (size_t i = 0; i < n; ++i)
-                    for (size_t j = 0; j < m; ++j)
-                        a[i][j] = val;
-            }
-            else a = nullptr;
-        }
-
-        Matrix(Matrix<T>&& other) :
-            n{ other.n }, m{ other.m }, a{ other.a }
-        { other.~Matrix(); }
-
-        Matrix(Matrix<T> const& other) :
-            n{ other.n }, m{ other.m }
-        { Copy(other); }
-
-        ~Matrix()
-        { Free(); }
-
-        size_t height() const noexcept
-        { return n; }
-
-        size_t width() const noexcept
-        { return m; }
-
-        Matrix<T>& operator = (Matrix<T> const& other)
-        {
-            n = other.n;
-            m = other.m;
-            if (other.a != nullptr) Copy(other);
-            return *this;
-        }
-
-        T*& operator[](size_t i)
-        { return a[i]; }
-
-        const T* operator[](size_t i) const
-        { return a[i]; }
-
-        bool Empty() const noexcept
-        { return a == nullptr; }
-
-        friend std::ostream& operator << (std::ostream& out, Matrix<T> const& m)
-        {
-            if (m.a == nullptr)
-                return out << "\nempty matrix\n";
-            for (size_t i = 0; i < m.n; ++i, out << '\n')
-                for (size_t j = 0; j < m.m; ++j)
-                    out << m.a[i][j] << ' ';
-            return out;
-        }
+COX_BEGIN_NAMESPACE
 
 
-    private:
-        size_t n, m;
-        T** a;
-        size_t n_alloc;
+class Matrix {
+public:
+	using value_type		= long long;
+	using size_type			= size_t;
+	using reference			= value_type&;
+	using const_reference	= value_type const&;
+	using pointer			= value_type*;
+	using iterator			= _Matrix_Iterator<Matrix>;
 
-        void Alloc()
-        {
-            n_alloc = n;
-            a = new T * [n_alloc];
+	static const size_type npos = -1;
 
-            for (size_t i = 0; i < n_alloc; ++i)
-                a[i] = new T[m];
-        }
+	Matrix(size_type lines, size_type columns, value_type value = value_type());
+	Matrix(Matrix const& m);
+	Matrix(Matrix&& m) noexcept;
+	~Matrix();
 
-        void Free()
-        {
-            if (a == nullptr) return;
-            for (size_t i = 0; i < n_alloc; ++i)
-                delete[] a[i];
-            delete[] a;
-            a = nullptr;
-        }
+	Matrix& operator = (Matrix const& m);
+	Matrix& operator = (Matrix&& m) noexcept;
+	
+	Matrix& operator += (value_type n);
+	Matrix& operator += (Matrix const& m);
 
-        void Copy(Matrix<T> const& other)
-        {
-            Free();
-            Alloc();
-            for (size_t i = 0; i < n; ++i)
-                for (size_t j = 0; j < m; ++j)
-                    a[i][j] = other[i][j];
-        }
-    };
+	Matrix& operator -= (value_type n);
+	Matrix& operator -= (Matrix const& m);
 
+	Matrix& operator *= (value_type n);
+	//Matrix& operator *= (Matrix const& m);
+
+	Matrix& operator /= (value_type n);
+
+
+	Matrix operator + (value_type n);
+	Matrix operator + (Matrix const& m);
+
+	Matrix operator - (value_type n);
+	Matrix operator - (Matrix const& m);
+
+	Matrix operator * (value_type n);
+	//Matrix operator * (Matrix const& m);
+
+	Matrix operator / (value_type n);
+	
+	const pointer operator [](size_type i) const;
+	pointer& operator [](size_type i);
+
+	bool operator == (Matrix const& m) const noexcept;
+
+	iterator begin() noexcept;
+	iterator end() noexcept;
+
+	bool isAddable(Matrix const& m) const noexcept;
+	bool isMultipliable(Matrix const& m) const noexcept;
+
+	size_type GetLines() const noexcept;
+	size_type GetColumns() const noexcept;
+
+	static bool isSquareMatrix(Matrix const& m);
+	static bool isValidMatrix(Matrix const& m);
+	static bool isUnitMatrix(Matrix const& m);
+	static bool isNullMatrix(Matrix const& m);
+	static bool isTriangularMatrix(Matrix const& m);
+	
+	static Matrix GetTransposed(Matrix const& m);
+	static value_type GetTrace(Matrix const& m);
+	static value_type GetDeterminant(Matrix const& m);
+	static Matrix GetInverse(Matrix const& m);
+
+	static Matrix GetUnitMatrix(size_type n);
+	static Matrix GetNullMatrix(size_type lines, size_type columns);
+
+	friend std::ostream& operator << (std::ostream& os, Matrix const& m);
+private:
+	size_type lines, columns;	
+	value_type** matrix;
+
+	void Allocate(size_type n, size_type m);
+	void Free();
+	void Copy(Matrix const& m);
 };
+
+
+COX_END_NAMESPACE
+
+

@@ -123,20 +123,6 @@ Matrix& Matrix::operator *= (value_type n)
     return *this;
 }
 
-//Matrix& Matrix::operator *= (Matrix const& m)
-//{
-//    if (!isMultipliable(m))
-//        return *this;
-//
-//    Matrix c(lines, m.columns);
-//
-//    for (size_type i = 0; i < lines; ++i)
-//        for(size_type j = 0; j < m.columns; ++i)
-//
-//
-//    *this = std::move(c);
-//    return *this;
-//}
 
 Matrix& Matrix::operator /= (value_type n)
 {
@@ -217,14 +203,6 @@ bool Matrix::isAddable(Matrix const& m) const noexcept
     return !lines && lines == m.lines 
            && columns == m.columns;
 }
-
-bool Matrix::isMultipliable(Matrix const& m) const noexcept
-{
-    return columns == m.lines
-           && lines && columns
-           && m.lines && m.columns;
-}
-
 
 Matrix::size_type Matrix::GetLines() const noexcept
 {

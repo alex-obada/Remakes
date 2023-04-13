@@ -10,7 +10,7 @@ public:
 	using pointer	      = Container::pointer;				/// T*
 	using node_pointer    = Container::node_pointer;		/// Node*
 	using reference	      = Container::reference;			/// T&
-	using const_reference = Container::const_reference;    /// const T&
+	using const_reference = Container::const_reference;     /// const T&
 
 	_List_Iterator(Container& c, node_pointer ptr) :
 		c {c}, ptr {ptr} 

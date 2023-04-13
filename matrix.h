@@ -12,12 +12,12 @@ COX_BEGIN_NAMESPACE
 
 class Matrix {
 public:
-	using value_type		= long long;
-	using size_type			= size_t;
-	using reference			= value_type&;
-	using const_reference	= value_type const&;
-	using pointer			= value_type*;
-	using iterator			= _Matrix_Iterator<Matrix>;
+	using value_type	  = long long;
+	using size_type		  = size_t;
+	using reference		  = value_type&;
+	using const_reference = value_type const&;
+	using pointer		  = value_type*;
+	using iterator		  = _Matrix_Iterator<Matrix>;
 
 	static const size_type npos = -1;
 
@@ -36,7 +36,6 @@ public:
 	Matrix& operator -= (Matrix const& m);
 
 	Matrix& operator *= (value_type n);
-	//Matrix& operator *= (Matrix const& m);
 
 	Matrix& operator /= (value_type n);
 
@@ -48,8 +47,6 @@ public:
 	Matrix operator - (Matrix const& m);
 
 	Matrix operator * (value_type n);
-	//Matrix operator * (Matrix const& m);
-
 	Matrix operator / (value_type n);
 	
 	const pointer operator [](size_type i) const;
@@ -61,7 +58,6 @@ public:
 	iterator end() noexcept;
 
 	bool isAddable(Matrix const& m) const noexcept;
-	bool isMultipliable(Matrix const& m) const noexcept;
 
 	size_type GetLines() const noexcept;
 	size_type GetColumns() const noexcept;
@@ -74,8 +70,6 @@ public:
 	
 	static Matrix GetTransposed(Matrix const& m);
 	static value_type GetTrace(Matrix const& m);
-	static value_type GetDeterminant(Matrix const& m);
-	static Matrix GetInverse(Matrix const& m);
 
 	static Matrix GetUnitMatrix(size_type n);
 	static Matrix GetNullMatrix(size_type lines, size_type columns);

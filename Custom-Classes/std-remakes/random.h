@@ -1,9 +1,11 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
-#include <cstdlib>
-#include <time.h>
-#include <cmath>
+#include <random>
+
+#include "../globals.h"
+
+COX_BEGIN_NAMESPACE
 
 class Random {
 public:
@@ -14,18 +16,23 @@ public:
     {
         if (instance == nullptr)
             instance = new Random();
-        return abs(rand() % max);
+
+        return instance->engine() % max;
     }
 
 private:
     Random()
     {
-        srand(time(NULL));
+        std::random_device rd;
+        engine = std::mt19937(rd());
     };
 
+    std::mt19937 engine;
     static Random* instance;
 };
 
 Random* Random::instance = nullptr;
+
+COX_END_NAMESPACE
 
 #endif // RANDOM_H

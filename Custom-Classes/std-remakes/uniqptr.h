@@ -26,8 +26,8 @@ public:
 
     unique_ptr& operator =(unique_ptr&& other)
     {
-        if(this != &other)
-            reset(other.release())
+        if (this != &other)
+            reset(other.release());
         return *this;
     }
 

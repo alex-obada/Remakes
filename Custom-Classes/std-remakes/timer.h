@@ -3,40 +3,72 @@
 
 #include <iostream>
 #include <chrono>
+#include <functional>
 
 #include "../globals.h"
 
 COX_BEGIN_NAMESPACE
 
-// using namespace std::literals::chrono_literals;
-
 using chrono_time_point = std::chrono::high_resolution_clock::time_point;
-using double_durr       = std::chrono::duration<double>;
-using funcptr           = void(*)(double_durr&);
+using namespace std::literals::chrono_literals;
 
-void LogTime(double_durr& duration) 
-{ 
-    std::cout << duration.count() << "s\n";
-}
+class Timer {
+public:
+    static std::function<void(std::chrono::duration<double>&)> DefaultLogFunction;
 
-struct Timer {
-    chrono_time_point start, end;
-    double_durr duration;
-    funcptr function;
- 
-    Timer(funcptr func = LogTime) : function{func}
-    { 
-        start = std::chrono::high_resolution_clock::now(); 
+    Timer(Timer const&) = delete;
+    Timer(Timer&&) = delete;
+
+    Timer(std::function<void(std::chrono::duration<double>&)> loggingFunction = DefaultLogFunction, bool startImmediately = true)
+        : loggingFunction{ loggingFunction }, duration { std::chrono::duration<double>() }, startImmediately { startImmediately }
+    {
+        if(!startImmediately)
+            start = std::chrono::high_resolution_clock::now();
     }
 
+    void Start()
+    {
+        if (startImmediately || started)
+            return;
+
+        started = true;
+        start = std::chrono::high_resolution_clock::now();
+    }
+
+    void Stop()
+    {
+        if (startImmediately || !started)
+            return;
+
+        end = std::chrono::high_resolution_clock::now();
+        duration = end - start;
+        started = false;
+
+        loggingFunction(duration);
+    }
+    
     ~Timer()
     {
+        if (!startImmediately)
+            return;
+
         end = std::chrono::high_resolution_clock::now();
         duration = end - start;
         
-        function(duration);
+        loggingFunction(duration);
     }
 
+private:
+    chrono_time_point start, end;
+    bool started = false;
+    std::chrono::duration<double> duration;
+    std::function<void(std::chrono::duration<double>&)> loggingFunction;
+    bool startImmediately;
+};
+
+std::function<void(std::chrono::duration<double>&)> Timer::DefaultLogFunction = [](std::chrono::duration<double>& duration) {
+    
+    std::cout << duration.count() / (1ms).count() << "ms\n";
 };
 
 COX_END_NAMESPACE

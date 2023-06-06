@@ -1,14 +1,14 @@
-#pragma once
+#ifndef MATRIX_
+#define MATRIX_
 
-#include "../globals.h"
 #include <iostream>
 #include <cmath>
 #include <algorithm>
 
+#include "../globals.h"
 #include "matrix_iterator.h"
 
 COX_BEGIN_NAMESPACE
-
 
 class Matrix {
 public:
@@ -88,3 +88,4 @@ private:
 COX_END_NAMESPACE
 
 
+#endif // !define MATRIX_

@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <numeric>
-#include <algorithm>
+
 #include "fractie.h"
 
 COX_BEGIN_NAMESPACE

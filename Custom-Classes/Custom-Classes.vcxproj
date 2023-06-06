@@ -25,13 +25,19 @@
     <ClInclude Include="random-classes\matrix_iterator.h" />
     <ClInclude Include="std-remakes\list.h" />
     <ClInclude Include="std-remakes\list_iterator.h" />
+    <ClInclude Include="std-remakes\random.h" />
     <ClInclude Include="std-remakes\string.h" />
+    <ClInclude Include="std-remakes\timer.h" />
+    <ClInclude Include="std-remakes\uniqptr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="random-classes\fractie.cpp" />
     <ClCompile Include="random-classes\matrix.cpp" />
     <ClCompile Include="std-remakes\string.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

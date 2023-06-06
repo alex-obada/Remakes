@@ -1,7 +1,9 @@
-#pragma once
+#ifndef MATRIX_ITER_
+#define MATRIX_ITER_
+
+#include <utility>
 
 #include "../globals.h"
-#include <utility>
 #include "matrix.h"
 
 COX_BEGIN_NAMESPACE
@@ -114,3 +116,5 @@ private:
 };
 
 COX_END_NAMESPACE
+
+#endif // !define MATRIX_ITER_

@@ -1,5 +1,11 @@
-#pragma once
+#ifndef UNIQUE_PTR_
+#define UNIQUE_PTR_
+
 #include <utility>
+
+#include "../globals.h"
+
+COX_BEGIN_NAMESPACE
 
 template <typename T>
 class unique_ptr {
@@ -88,3 +94,7 @@ unique_ptr<T> make_unique()
 {
     return unique_ptr(new T);
 }
+
+COX_END_NAMESPACE
+
+#endif // !UNIQUE_PTR_

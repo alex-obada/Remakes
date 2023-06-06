@@ -1,4 +1,6 @@
-#pragma once
+#ifndef LIST_ITER_
+#define LIST_ITER_
+
 #include "../globals.h"
 
 COX_BEGIN_NAMESPACE
@@ -54,3 +56,5 @@ private:
 };
 
 COX_END_NAMESPACE
+
+#endif

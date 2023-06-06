@@ -1,5 +1,8 @@
-#pragma once
+#ifndef LIST_
+#define LIST_
+
 #include <iostream>
+
 #include "list_iterator.h"
 #include "../globals.h"
 
@@ -13,21 +16,13 @@ private:
 			prev{ prev }, data{ x }, next{ next } 
 		{}
 
-		/*Node(Node* prev, T&& x, Node* next) :
-			prev{ prev }, data{ std::move(x) }, next{ next }
-		{
-			std::cout << __FUNCSIG__ << '\n';
-		}*/
-
-
 		Node* prev;
 		T data;
 		Node* next;
-
 	};
 
 	size_t nr;
-	Node* first, * last;
+	Node *first, *last;
 
 public:
 
@@ -62,21 +57,27 @@ public:
 
 	List& operator = (List const& list)
 	{
-		if (this == &list) return *this;
+		if (this == &list) 
+			return *this;
 
 		nr = 0;
 		Copy(list);
-		if (list.Empty()) return *this;
+		if (list.Empty()) 
+			return *this;
 
 		return *this;
 	}
 
 	List& operator = (List&& list) noexcept
 	{
+		if (this == &list)
+			return *this;
+
 		nr = list.nr;
 		if (!Empty())
 		{
-			Free(); return *this;
+			Free(); 
+			return *this;
 		}
 
 		Move(list);
@@ -165,7 +166,6 @@ public:
 		std::swap(first, other.first);
 		std::swap(last, other.last);
 		std::swap(nr, other.nr);
-
 	}
 
 	void push_back(const_reference x) noexcept
@@ -188,32 +188,30 @@ public:
 		erase(first);
 	}
 
-
-	// nu mere
-	//template<typename... Args>
-	//reference emplace_back(Args&&... args) {
-	//	// empty list
-	//	if (first == nullptr)
-	//	{
-	//		first = last = new Node(nullptr, 
-	//			T(std::forward<Args>(args)...), nullptr);
-	//		nr++;
-	//		return;
-	//	}
-	// 
-	//	// general case
-	//	nr++;
-	//	last = last->next = new Node(last, 
-	//		T(std::forward<Args>(args)...), nullptr);
-	//	
-	//}
+	template<typename... Args>
+	void emplace_back(Args&&... args) 
+	{
+		// empty list
+		if (first == nullptr)
+		{
+			first = last = new Node(nullptr, 
+				T(std::forward<Args>(args)...), nullptr);
+			nr++;
+			return;
+		}
+	 
+		// general case
+		nr++;
+		last = last->next = new Node(last, 
+			T(std::forward<Args>(args)...), nullptr);
+	}
 
 private:
 
 	Node* erase(Node* p)
 	{
-		if (!p || !first) return nullptr;
-
+		if (!p || !first) 
+			return nullptr;
 
 		// 1 element in list
 		if (first->next == nullptr)
@@ -281,7 +279,6 @@ private:
 
 	Node* insertBefore(Node* p, const_reference val)
 	{
-			
 		// empty list
 		if (first == nullptr && p == nullptr)
 		{
@@ -308,7 +305,7 @@ private:
 
 	void Free()
 	{
-		if (first == nullptr && last == nullptr) 
+		if (first == nullptr && last == nullptr && nr == 0) 
 			return;
 
 		nr = 0;
@@ -323,7 +320,8 @@ private:
 
 	void Copy(List const& list)
 	{
-		if (!this->Empty()) Free();
+		if (!this->Empty()) 
+			Free();
 		for (Node* p = list.first; p; p = p->next)
 			this->push_back(p->data);
 	}
@@ -333,10 +331,11 @@ private:
 		first = list.first;
 		last = list.last;
 		list.first = list.last = nullptr;
-		list.~List();
 		list.nr = 0;
 	}
 
 };
 
 COX_END_NAMESPACE
+
+#endif

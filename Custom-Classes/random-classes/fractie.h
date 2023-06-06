@@ -1,17 +1,15 @@
-//#pragma once
-
-#ifndef _FRACTIE_H
-#define _FRACTIE_H
+#ifndef FRACTIE_
+#define FRACTIE_
 
 #ifndef __GNUC__
     #define __PRETTY_FUNCTION__ __FUNCSIG__
 #endif
 
-#include "../globals.h"
 #include <iostream>
 
-COX_BEGIN_NAMESPACE
+#include "../globals.h"
 
+COX_BEGIN_NAMESPACE
 
 class Fractie {
 public:
@@ -80,6 +78,5 @@ private:
 };
 
 COX_END_NAMESPACE
-
 
 #endif

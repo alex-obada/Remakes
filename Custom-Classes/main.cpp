@@ -2,13 +2,22 @@
 
 #include "globals.h"
 #include "std-remakes/random.h"
+#include "std-remakes/list.h"
 using namespace cox;
 
 void TestRandom();
+void TestList();
 
 int main()
 {
-    TestRandom();
+    TestList();
+    return 0;
+}
+
+void TestList()
+{
+    List<int> l;
+    l.emplace_back(2);
 }
 
 void TestRandom()

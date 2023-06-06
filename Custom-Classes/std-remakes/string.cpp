@@ -9,7 +9,6 @@ string::string(const char* arr)
 	CheckSize();
 	if (buffer != nullptr)
 		strcpy(buffer, arr);
-
 }
 
 string::string(string const& other) : len{ other.size() }
@@ -58,7 +57,6 @@ string& string::operator+=(const char* other)
 	CheckSize();
 	strcat(buffer, other);
 	return *this;
-
 }
 
 string& string::operator=(string const& other)
@@ -244,7 +242,6 @@ std::istream& operator>>
 	s.allocated = s.len = 100001;
 		
 	return in;
-
 }
 
 std::ostream& operator<<

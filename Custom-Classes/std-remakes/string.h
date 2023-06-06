@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef STRING_
+#define STRING_
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include "../globals.h"
@@ -65,3 +65,5 @@ private:
 };
 
 COX_END_NAMESPACE
+
+#endif

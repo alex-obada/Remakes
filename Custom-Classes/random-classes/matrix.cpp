@@ -1,6 +1,5 @@
 #include "matrix.h"
 
-
 COX_BEGIN_NAMESPACE
 
 Matrix Matrix::GetUnitMatrix(size_type n)

@@ -1,13 +1,18 @@
-#ifndef _TIMER
-#define _TIMER
+#ifndef TIMER_
+#define TIMER_
 
 #include <iostream>
 #include <chrono>
+
+#include "../globals.h"
+
+COX_BEGIN_NAMESPACE
+
 // using namespace std::literals::chrono_literals;
 
-typedef std::chrono::high_resolution_clock::time_point chrono_time_point;
-typedef std::chrono::duration<double> double_durr;
-typedef void(*funcptr)(double_durr&);
+using chrono_time_point = std::chrono::high_resolution_clock::time_point;
+using double_durr       = std::chrono::duration<double>;
+using funcptr           = void(*)(double_durr&);
 
 void LogTime(double_durr& duration) 
 { 
@@ -33,5 +38,7 @@ struct Timer {
     }
 
 };
+
+COX_END_NAMESPACE
 
  #endif

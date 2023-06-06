@@ -12,7 +12,7 @@ public:
     Random(Random const& r) = delete;
     Random& operator = (Random const& r) = delete;
 
-    static int Get(int max = (int)1e9)
+    static uint32_t Get(uint32_t max = 2e9)
     {
         if (instance == nullptr)
             instance = new Random();

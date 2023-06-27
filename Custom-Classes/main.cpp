@@ -5,17 +5,24 @@
 #include "std-remakes/string.h"
 #include "std-remakes/timer.h"
 #include "std-remakes/uniqptr.h"
+#include "std-remakes/vector.h"
 
 using namespace cox;
 
 void TestRandom();
 void TestList();
 void TestTimer();
+void TestVector();
 
 int main()
 {
-    TestTimer();
+    TestVector();
     return 0;
+}
+
+void TestVector()
+{
+    vector<int> a;
 }
 
 void TestTimer()

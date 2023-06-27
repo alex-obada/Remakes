@@ -7,7 +7,7 @@
 
 #include "../globals.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 using chrono_time_point = std::chrono::high_resolution_clock::time_point;
 using namespace std::literals::chrono_literals;
@@ -71,6 +71,6 @@ std::function<void(std::chrono::duration<double>&)> Timer::DefaultLogFunction = 
     std::cout << duration.count() / (1ms).count() << "ms\n";
 };
 
-COX_END_NAMESPACE
+_COX_END
 
  #endif

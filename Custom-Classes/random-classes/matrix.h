@@ -8,7 +8,7 @@
 #include "../globals.h"
 #include "matrix_iterator.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 class Matrix {
 public:
@@ -85,7 +85,7 @@ private:
 };
 
 
-COX_END_NAMESPACE
+_COX_END
 
 
 #endif // !define MATRIX_

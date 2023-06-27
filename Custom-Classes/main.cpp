@@ -21,7 +21,7 @@ int main()
 void TestTimer()
 {
     Timer t(Timer::DefaultLogFunction, false);
-
+    /*
     t.Start();
     for (int i = 1; i <= 1e9; ++i);
     t.Stop();
@@ -32,6 +32,7 @@ void TestTimer()
     for (int i = 1; i <= 1e9; ++i);
     t.Stop();
 
+    */
 }
 
 void TestList()
@@ -44,5 +45,6 @@ void TestRandom()
 {
     int i = 100;
     while (i--)
+        
         std::cout << Random::Get() << '\n';
 }

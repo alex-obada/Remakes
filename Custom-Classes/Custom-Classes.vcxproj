@@ -29,6 +29,7 @@
     <ClInclude Include="std-remakes\string.h" />
     <ClInclude Include="std-remakes\timer.h" />
     <ClInclude Include="std-remakes\uniqptr.h" />
+    <ClInclude Include="std-remakes\vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -38,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="TODOO.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

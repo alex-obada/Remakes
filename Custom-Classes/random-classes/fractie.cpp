@@ -5,7 +5,7 @@
 
 #include "fractie.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 int Fractie::Cmmdc(int a, int b)
 {
@@ -316,4 +316,4 @@ int Fractie::NrCifre(int n)
     return cnt;
 }
 
-COX_END_NAMESPACE
+_COX_END

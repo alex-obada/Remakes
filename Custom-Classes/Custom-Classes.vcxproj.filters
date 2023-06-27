@@ -45,6 +45,9 @@
     <ClInclude Include="std-remakes\uniqptr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="std-remakes\vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="random-classes\fractie.cpp">
@@ -62,5 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="TODOO.md" />
   </ItemGroup>
 </Project>

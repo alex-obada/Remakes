@@ -6,7 +6,7 @@
 #include "../globals.h"
 #include "matrix.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 template<class Container>
 class _Matrix_Iterator {
@@ -115,6 +115,6 @@ private:
 
 };
 
-COX_END_NAMESPACE
+_COX_END
 
 #endif // !define MATRIX_ITER_

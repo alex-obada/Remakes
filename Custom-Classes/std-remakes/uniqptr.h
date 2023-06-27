@@ -5,7 +5,7 @@
 
 #include "../globals.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 template <typename T>
 class unique_ptr {
@@ -48,11 +48,10 @@ public:
     
     pointer release() noexcept
     {
-        // fancy way
-        //return std::exchange(m_ptr, nullptr);
-        pointer copy = m_ptr;
-        m_ptr = nullptr;
-        return copy;
+        //pointer copy = m_ptr;
+        //m_ptr = nullptr;
+        //return copy;
+        return std::exchange(m_ptr, nullptr);
     }
 
     void reset(pointer ptr = nullptr) noexcept
@@ -95,6 +94,6 @@ unique_ptr<T> make_unique()
     return unique_ptr(new T);
 }
 
-COX_END_NAMESPACE
+_COX_END
 
 #endif // !UNIQUE_PTR_

@@ -1,6 +1,6 @@
 #include "matrix.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 Matrix Matrix::GetUnitMatrix(size_type n)
 {
@@ -356,4 +356,4 @@ Matrix Matrix::operator / (value_type n)
 
 
 
-COX_END_NAMESPACE
+_COX_END

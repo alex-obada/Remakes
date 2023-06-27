@@ -5,7 +5,7 @@
 
 #include "../globals.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 class Random {
 public:
@@ -33,6 +33,6 @@ private:
 
 Random* Random::instance = nullptr;
 
-COX_END_NAMESPACE
+_COX_END
 
 #endif // RANDOM_H

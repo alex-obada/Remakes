@@ -7,7 +7,7 @@
 #include <cstring>
 #include <iostream>
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 class string
 {
@@ -64,6 +64,6 @@ private:
 	char* buffer = nullptr;
 };
 
-COX_END_NAMESPACE
+_COX_END
 
 #endif

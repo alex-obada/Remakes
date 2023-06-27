@@ -3,7 +3,7 @@
 
 #include "../globals.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 template <class Container>
 class _List_Iterator {
@@ -55,6 +55,6 @@ private:
 	node_pointer ptr;
 };
 
-COX_END_NAMESPACE
+_COX_END
 
 #endif

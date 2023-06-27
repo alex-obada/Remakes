@@ -2,5 +2,5 @@
 
 namespace cox {};
 
-#define COX_BEGIN_NAMESPACE namespace cox {
-#define COX_END_NAMESPACE };
+#define _COX_BEGIN namespace cox {
+#define _COX_END };

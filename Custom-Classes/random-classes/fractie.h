@@ -9,7 +9,7 @@
 
 #include "../globals.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 class Fractie {
 public:
@@ -77,6 +77,6 @@ private:
 
 };
 
-COX_END_NAMESPACE
+_COX_END
 
 #endif

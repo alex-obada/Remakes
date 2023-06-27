@@ -6,7 +6,7 @@
 #include "list_iterator.h"
 #include "../globals.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 template<typename T>
 class List {
@@ -336,6 +336,6 @@ private:
 
 };
 
-COX_END_NAMESPACE
+_COX_END
 
 #endif

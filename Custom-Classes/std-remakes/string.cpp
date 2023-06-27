@@ -1,7 +1,7 @@
 #include "string.h"
 #include "../globals.h"
 
-COX_BEGIN_NAMESPACE
+_COX_BEGIN
 
 string::string(const char* arr)
 {
@@ -250,4 +250,4 @@ std::ostream& operator<<
 	return out << s.buffer;
 }
 
-COX_END_NAMESPACE
+_COX_END

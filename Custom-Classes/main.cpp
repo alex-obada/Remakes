@@ -16,7 +16,7 @@ void TestVector();
 
 int main()
 {
-    TestVector();
+    TestList();
     return 0;
 }
 
@@ -44,8 +44,45 @@ void TestTimer()
 
 void TestList()
 {
+    auto PrintList = []<typename T>(List<T>& list) {
+        /*for (auto const& x : list)
+            std::cout << x << ' ';
+        std::cout << std::endl;*/
+
+        for (auto it = list.cbegin(); it != list.cend(); ++it)
+        {
+            std::cout << *it << ' ';
+        }
+        std::cout << std::endl;
+
+    };
+
     List<int> l;
-    l.emplace_back(2);
+    l.push_back(2);
+    l.push_back(3);
+    l.push_back(5);
+    l.push_back(7);
+
+
+
+    std::vector<int> a;
+    auto b = a.begin();
+
+
+
+    PrintList(l);
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void TestRandom()

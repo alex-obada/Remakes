@@ -2,6 +2,7 @@
 #define LIST_
 
 #include <iostream>
+#include <initializer_list>
 
 #include "list_iterator.h"
 #include "../globals.h"
@@ -10,43 +11,44 @@ _COX_BEGIN
 
 template<typename T>
 class List {
-private:
-	struct Node {
-		Node(Node* prev, T x, Node* next) :
-			prev{ prev }, data{ x }, next{ next } 
-		{}
-
-		Node* prev;
-		T data;
-		Node* next;
-	};
-
-	size_t nr;
-	Node *first, *last;
+	struct Node;
 
 public:
+	using value_type	   = T;
+	using pointer		   = T*;
+	using reference		   = T&;
+	using const_reference  = const T&;
+	using node_type        = Node;
+	using node_pointer	   = Node*;
+	using iterator		   = _List_Iter<List>;
+	using const_iterator   = _Const_List_Iter<const List>;
+	//using reverse_iterator = std::reverse_iterator<iterator>;
 
-	using pointer =			 T*;
-	using reference =		 T&;
-	using const_reference =	 const T&;
-	using node_pointer =	 Node*;
-	using iterator =		 _List_Iterator<List>;
-
+public:
 
 	List() : nr{ 0 }, first{ nullptr }, last{ nullptr }
 	{}
 
 	List(List const& list) : nr{ 0 }
 	{
+		if (list.empty()) 
+			return;
 		Copy(list);
-		if (list.Empty()) return;
 	}
 
 	List(List&& list) noexcept : nr{ list.nr }
 	{
-		if (!Empty()) Free();
+		if (!empty()) 
+			Free();
 
 		Move(list);
+	}
+
+	List(std::initializer_list<T> l) 
+		: nr{ 0 }, first{ nullptr }, last{ nullptr } 
+	{
+		for (const auto& value : l)
+			emplace_back(value);
 	}
 
 	~List()
@@ -54,6 +56,12 @@ public:
 		Free();
 	}
 
+public:
+
+	bool operator == (const List& other) const
+	{
+		return first == other.first;
+	}
 
 	List& operator = (List const& list)
 	{
@@ -62,7 +70,7 @@ public:
 
 		nr = 0;
 		Copy(list);
-		if (list.Empty()) 
+		if (list.empty()) 
 			return *this;
 
 		return *this;
@@ -74,7 +82,7 @@ public:
 			return *this;
 
 		nr = list.nr;
-		if (!Empty())
+		if (!empty())
 		{
 			Free(); 
 			return *this;
@@ -84,7 +92,7 @@ public:
 		return *this;
 	}
 
-	// Iterator
+public:		// Iterator
 
 	iterator begin() noexcept
 	{
@@ -95,25 +103,28 @@ public:
 	{
 		return iterator(*this, nullptr);
 	}
-
-	node_pointer prev(node_pointer ptr) const noexcept
+	
+	const_iterator cbegin() const noexcept
 	{
-		if (ptr == nullptr) return last;
-		return ptr->prev;
+		return const_iterator(*this, first);
 	}
 
-	node_pointer next(node_pointer ptr) const noexcept
+	const_iterator cend() const noexcept
 	{
-		return ptr->next;
+		return const_iterator(*this, nullptr);
 	}
 
-	reference data(node_pointer ptr) const noexcept
-	{
-		return ptr->data;
-	}
+	//reverse_iterator rbegin() const noexcept
+	//{
+	//	return reverse_iterator(*this, last);
+	//}
 
+	//reverse_iterator rend() const noexcept
+	//{
+	//	return reverse_iterator(*this, nullptr);
+	//}
 
-	// Element acces
+public:		// Element acces
 
 	const_reference front() const
 	{
@@ -126,14 +137,12 @@ public:
 	}
 
 
-	// Capacity
-
 	size_t size() const noexcept
 	{
 		return nr;
 	}
 
-	bool Empty() const noexcept
+	bool empty() const noexcept
 	{
 		return first == nullptr;
 	}
@@ -144,7 +153,7 @@ public:
 	}
 
 		
-	// Modifiers
+public:		// Modifiers
 
 	iterator insert(iterator pos, const_reference value)
 	{
@@ -206,7 +215,7 @@ public:
 			T(std::forward<Args>(args)...), nullptr);
 	}
 
-private:
+private:	// Utility
 
 	Node* erase(Node* p)
 	{
@@ -320,7 +329,7 @@ private:
 
 	void Copy(List const& list)
 	{
-		if (!this->Empty()) 
+		if (!this->empty()) 
 			Free();
 		for (Node* p = list.first; p; p = p->next)
 			this->push_back(p->data);
@@ -334,6 +343,28 @@ private:
 		list.nr = 0;
 	}
 
+private:
+	size_t nr;
+	Node *first, *last;
+
+private:
+	struct Node {
+		Node() = default;
+
+		Node(Node* prev, T const& x, Node* next) :
+			prev{ prev }, data{ x }, next{ next }
+		{}
+
+		Node* prev;
+		T data;
+		Node* next;
+
+		bool operator == (const Node& other) const
+		{
+			return &data == &other.data;
+		}
+
+	};
 };
 
 _COX_END

@@ -162,6 +162,8 @@ public:		// Modifiers
 
 	iterator erase(iterator pos)
 	{
+		if(pos == end())
+			return end();
 		return iterator(*this, erase(pos.GetPtr()));
 	}
 
@@ -303,6 +305,9 @@ private:	// Utility
 			nr++;
 			return first;
 		}
+
+		if(p == nullptr)
+			return last = last->next = new Node(last, val, nullptr);
 
 		// general case
 		nr++;

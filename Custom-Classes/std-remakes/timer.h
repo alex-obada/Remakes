@@ -3,72 +3,56 @@
 
 #include <iostream>
 #include <chrono>
-#include <functional>
+#include <string>
 
 #include "../globals.h"
 
 _COX_BEGIN
 
-using chrono_time_point = std::chrono::high_resolution_clock::time_point;
-using namespace std::literals::chrono_literals;
-
 class Timer {
 public:
-    static std::function<void(std::chrono::duration<double>&)> DefaultLogFunction;
-
-    Timer(Timer const&) = delete;
-    Timer(Timer&&) = delete;
-
-    Timer(std::function<void(std::chrono::duration<double>&)> loggingFunction = DefaultLogFunction, bool startImmediately = true)
-        : loggingFunction{ loggingFunction }, duration { std::chrono::duration<double>() }, startImmediately { startImmediately }
+    Timer()
     {
-        if(!startImmediately)
-            start = std::chrono::high_resolution_clock::now();
+        Reset();
     }
 
-    void Start()
+    void Reset()
     {
-        if (startImmediately || started)
-            return;
-
-        started = true;
         start = std::chrono::high_resolution_clock::now();
     }
 
-    void Stop()
+    double Elapsed()
     {
-        if (startImmediately || !started)
-            return;
-
-        end = std::chrono::high_resolution_clock::now();
-        duration = end - start;
-        started = false;
-
-        loggingFunction(duration);
+        return std::chrono::duration_cast<std::chrono::nanoseconds>
+            (std::chrono::high_resolution_clock::now() - start)
+            .count() * 0.001 * 0.001 * 0.001;
     }
-    
-    ~Timer()
-    {
-        if (!startImmediately)
-            return;
 
-        end = std::chrono::high_resolution_clock::now();
-        duration = end - start;
-        
-        loggingFunction(duration);
+    double ElapsedMs()
+    {
+        return Elapsed() * 1000.0;
     }
 
 private:
-    chrono_time_point start, end;
-    bool started = false;
-    std::chrono::duration<double> duration;
-    std::function<void(std::chrono::duration<double>&)> loggingFunction;
-    bool startImmediately;
+    std::chrono::time_point<std::chrono::high_resolution_clock> start;
 };
 
-std::function<void(std::chrono::duration<double>&)> Timer::DefaultLogFunction = [](std::chrono::duration<double>& duration) {
-    
-    std::cout << duration.count() / (1ms).count() << "ms\n";
+
+class ScopedTimer {
+public:
+    ScopedTimer(std::string const& name, std::ostream* stream = &std::cout)
+        : name{ name }, stream{ stream } {}
+
+    ~ScopedTimer()
+    {
+        double time = timer.ElapsedMs();
+        *stream << "[TIMER] " << name << " - " << time << " ms\n";
+    }
+
+private:
+    std::string name;
+    std::ostream* stream;
+    Timer timer;
 };
 
 _COX_END

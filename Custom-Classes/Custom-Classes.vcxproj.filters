@@ -27,9 +27,6 @@
     <ClInclude Include="random-classes\matrix_iterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="std-remakes\list.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="std-remakes\list_iterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -46,6 +43,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="std-remakes\vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="std-remakes\list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

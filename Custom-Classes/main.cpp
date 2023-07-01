@@ -6,6 +6,7 @@
 #include "std-remakes/timer.h"
 #include "std-remakes/uniqptr.h"
 #include "std-remakes/vector.h"
+#include <list>
 
 using namespace cox;
 
@@ -16,7 +17,7 @@ void TestVector();
 
 int main()
 {
-    TestList();
+    TestTimer();
     return 0;
 }
 
@@ -27,19 +28,8 @@ void TestVector()
 
 void TestTimer()
 {
-    Timer t(Timer::DefaultLogFunction, false);
-    /*
-    t.Start();
-    for (int i = 1; i <= 1e9; ++i);
-    t.Stop();
-    t.Start();
-    for (int i = 1; i <= 1e9; ++i);
-    t.Stop();
-    t.Start();
-    for (int i = 1; i <= 1e9; ++i);
-    t.Stop();
-
-    */
+    ScopedTimer t("pula");
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
 
 void TestList()
@@ -57,20 +47,21 @@ void TestList()
 
     };
 
-    List<int> l;
+    List<int> l = { 1, 2, 3, 4, 31245 };
     l.push_back(2);
     l.push_back(3);
     l.push_back(5);
     l.push_back(7);
 
+    //auto i = --l.end();
+    //l.erase(i);
+
+    std::list<int> a = { 2, 3, 5, 8 };
+    auto it = a.end();
+    std::cout << (--it).operator*();;
 
 
-    std::vector<int> a;
-    auto b = a.begin();
-
-
-
-    PrintList(l);
+    //PrintList(l);
 
 
 

@@ -39,7 +39,13 @@ void TestList()
             std::cout << x << ' ';
         std::cout << std::endl;*/
 
-        for (auto it = list.cbegin(); it != list.cend(); ++it)
+        //for (auto it = list.cbegin(); it != list.cend(); ++it)
+        //{
+        //    //*it = 2; // error
+        //    std::cout << *it << ' ';
+        //}
+
+        for (auto it = list.crbegin(); it != list.crend(); ++it)
         {
             //*it = 2; // error
             std::cout << *it << ' ';
@@ -49,25 +55,36 @@ void TestList()
     };
 
     List<int> l = { 1, 2, 3, 4, 20 };
-    l.push_back(2);
-    l.push_back(3);
-    l.push_back(5);
-    l.push_back(7);
 
     PrintList(l);
     //auto i = l.cbegin();
     //l.erase(i);
 
+    int asd;
+    int* p = &asd;
+    std::cout << p << '\n' << ++p << "\n\n";
 
 
 
-
-    auto it = l.end();
+    auto it = l.rend();
     std::cout << (--it).operator*() << "\n\n";
 
-    Node<int> c(nullptr, 1, nullptr);
-    std::cout << &c.data << "  -  " << &c.prev << "\n\n";
-    std::cout << sizeof(Node<int>*);
+    Node<std::pair<int, int>> c(nullptr, { 1, 1 }, nullptr);
+    std::cout << "Prev: " << &c.prev << '\n' 
+              << "Data: " << &c.data << '\n' 
+              << "Next: " << &c.next << "\n\n";
+
+
+    Node<int> ca(nullptr, 1, nullptr);
+    std::cout << "Prev: " << &ca.prev << '\n'
+        << "Data: " << &ca.data << '\n'
+        << "Next: " << &ca.next << "\n\n";
+
+
+    std::cout << "Prev: " << offsetof(Node<int>,prev) << '\n'
+              << "Data: " << offsetof(Node<int>,data) << '\n'
+              << "Next: " << offsetof(Node<int>,next) << "\n\n";
+    std::cout << sizeof(std::nullptr_t);
 
 
 

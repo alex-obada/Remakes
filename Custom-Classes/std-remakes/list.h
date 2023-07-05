@@ -37,6 +37,8 @@ public:
 	using node_pointer	   = node_type*;
 	using iterator		   = _List_Iter<List<T>>;
 	using const_iterator   = _List_Iter<List<const T>>;
+	using reverse_iterator = _Reverse_List_Iter<List<T>>;
+	using const_reverse_iterator = _Reverse_List_Iter<List<const T>>;
 
 public:
 
@@ -128,15 +130,25 @@ public:		// Iterator
 		return const_iterator(*((List<const T>*)this), nullptr);
 	}
 
-	//reverse_iterator rbegin() const noexcept
-	//{
-	//	return reverse_iterator(*this, last);
-	//}
+	reverse_iterator rbegin() noexcept
+	{
+		return reverse_iterator(*this, last);
+	}
 
-	//reverse_iterator rend() const noexcept
-	//{
-	//	return reverse_iterator(*this, nullptr);
-	//}
+	reverse_iterator rend() noexcept
+	{
+		return reverse_iterator(*this, nullptr);
+	}
+
+	const_reverse_iterator crbegin() const noexcept
+	{
+		return const_reverse_iterator(*((List<const T>*)this), (Node<const T>*)last);
+	}
+
+	const_reverse_iterator crend() const noexcept
+	{
+		return const_reverse_iterator(*((List<const T>*)this), nullptr);
+	}
 
 public:		// Element acces
 
@@ -150,6 +162,16 @@ public:		// Element acces
 		return last->data;
 	}
 
+
+	reference front()
+	{
+		return first->data;
+	}
+
+	reference back()
+	{
+		return last->data;
+	}
 
 	size_t size() const noexcept
 	{

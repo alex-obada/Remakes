@@ -32,7 +32,16 @@ public:
 
 	_List_Iter& operator-- ()
 	{
-		ptr = ptr->prev;
+		if (ptr == nullptr)
+		{
+			// 2 is the offset between data (&c.back())
+			// and prev members in Node<T>
+			void* prev = (void*)(&c.back() - 2);
+			ptr = (node_pointer)prev;
+		}
+		else
+			ptr = ptr->prev;
+
 		return *this;
 	}
 

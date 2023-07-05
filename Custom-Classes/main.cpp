@@ -62,11 +62,12 @@ void TestList()
 
 
 
-    /*std::list<int> a = { 2, 3, 5, 8 };
-    auto it = a.end();
-    std::cout << (--it).operator*();;*/
+    auto it = l.end();
+    std::cout << (--it).operator*() << "\n\n";
 
-
+    Node<int> c(nullptr, 1, nullptr);
+    std::cout << &c.data << "  -  " << &c.prev << "\n\n";
+    std::cout << sizeof(Node<int>*);
 
 
 

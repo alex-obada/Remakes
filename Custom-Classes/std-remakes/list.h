@@ -9,20 +9,34 @@
 
 _COX_BEGIN
 
+template<class Type>
+struct Node {
+	Node(Node* prev, Type const& x, Node* next) :
+		prev{ prev }, data{ x }, next{ next }
+	{}
+
+	Node* prev;
+	Type data;
+	Node* next;
+
+	bool operator == (const Node& other) const
+	{
+		return &data == &other.data;
+	}
+
+};
+
 template<typename T>
 class List {
-	struct Node;
-
 public:
 	using value_type	   = T;
 	using pointer		   = T*;
 	using reference		   = T&;
 	using const_reference  = const T&;
-	using node_type        = Node;
-	using node_pointer	   = Node*;
-	using iterator		   = _List_Iter<List>;
-	using const_iterator   = _Const_List_Iter<const List>;
-	//using reverse_iterator = std::reverse_iterator<iterator>;
+	using node_type        = Node<T>;
+	using node_pointer	   = node_type*;
+	using iterator		   = _List_Iter<List<T>>;
+	using const_iterator   = _List_Iter<List<const T>>;
 
 public:
 
@@ -58,7 +72,7 @@ public:
 
 public:
 
-	bool operator == (const List& other) const
+	bool operator == (List const& other) const
 	{
 		return first == other.first;
 	}
@@ -106,12 +120,12 @@ public:		// Iterator
 	
 	const_iterator cbegin() const noexcept
 	{
-		return const_iterator(*this, first);
+		return const_iterator(*((List<const T>*)this), (Node<const T>*)first);
 	}
 
 	const_iterator cend() const noexcept
 	{
-		return const_iterator(*this, nullptr);
+		return const_iterator(*((List<const T>*)this), nullptr);
 	}
 
 	//reverse_iterator rbegin() const noexcept
@@ -149,7 +163,7 @@ public:		// Element acces
 
 	operator bool() const noexcept
 	{
-		return !this->Empty();
+		return !this->empty();
 	}
 
 		
@@ -205,7 +219,7 @@ public:		// Modifiers
 		// empty list
 		if (first == nullptr)
 		{
-			first = last = new Node(nullptr, 
+			first = last = new node_type(nullptr, 
 				T(std::forward<Args>(args)...), nullptr);
 			nr++;
 			return;
@@ -213,13 +227,13 @@ public:		// Modifiers
 	 
 		// general case
 		nr++;
-		last = last->next = new Node(last, 
+		last = last->next = new node_type(last, 
 			T(std::forward<Args>(args)...), nullptr);
 	}
 
 private:	// Utility
 
-	Node* erase(Node* p)
+	node_pointer erase(node_pointer p)
 	{
 		if (!p || !first) 
 			return nullptr;
@@ -254,7 +268,7 @@ private:	// Utility
 		}
 
 		// general case
-		Node* tail = p->next;
+		node_pointer tail = p->next;
 		p->prev->next = p->next;
 		p->next->prev = p->prev;
 		nr--;
@@ -264,12 +278,12 @@ private:	// Utility
 
 	}
 
-	void insertAfter(Node* p, const_reference val)
+	void insertAfter(node_pointer p, const_reference val)
 	{
 		// empty list
 		if (first == nullptr && p == nullptr)
 		{
-			first = last = new Node(nullptr, val, nullptr);
+			first = last = new node_type(nullptr, val, nullptr);
 			nr++;
 			return;
 		}
@@ -277,23 +291,23 @@ private:	// Utility
 		// 1 element
 		if (p->next == nullptr)
 		{
-			last = last->next = new Node(last, val, nullptr);
+			last = last->next = new node_type(last, val, nullptr);
 			nr++;
 			return;
 		}
 
 		// general case
 		nr++;
-		p->next = new Node(p, val, p->next);
+		p->next = new node_type(p, val, p->next);
 		p->next->next->prev = p->next;
 	}
 
-	Node* insertBefore(Node* p, const_reference val)
+	node_pointer insertBefore(node_pointer p, const_reference val)
 	{
 		// empty list
 		if (first == nullptr && p == nullptr)
 		{
-			first = last = new Node(nullptr, val, nullptr);
+			first = last = new node_type(nullptr, val, nullptr);
 			nr++;
 			return first;
 		}
@@ -301,17 +315,17 @@ private:	// Utility
 		// 1 element
 		if (p == first)
 		{
-			first = first->prev = new Node(nullptr, val, first);
+			first = first->prev = new node_type(nullptr, val, first);
 			nr++;
 			return first;
 		}
 
 		if(p == nullptr)
-			return last = last->next = new Node(last, val, nullptr);
+			return last = last->next = new node_type(last, val, nullptr);
 
 		// general case
 		nr++;
-		p->prev = new Node(p->prev, val, p);
+		p->prev = new node_type(p->prev, val, p);
 		p->prev->prev->next = p->prev;
 		return p->prev;
 	}
@@ -323,7 +337,7 @@ private:	// Utility
 			return;
 
 		nr = 0;
-		for (Node* p = first, *aux; p != nullptr; p = aux)
+		for (node_pointer p = first, aux; p != nullptr; p = aux)
 		{
 			aux = p->next;
 			delete p;
@@ -336,7 +350,7 @@ private:	// Utility
 	{
 		if (!this->empty()) 
 			Free();
-		for (Node* p = list.first; p; p = p->next)
+		for (node_pointer p = list.first; p; p = p->next)
 			this->push_back(p->data);
 	}
 
@@ -350,26 +364,8 @@ private:	// Utility
 
 private:
 	size_t nr;
-	Node *first, *last;
+	node_pointer first, last;
 
-private:
-	struct Node {
-		Node() = default;
-
-		Node(Node* prev, T const& x, Node* next) :
-			prev{ prev }, data{ x }, next{ next }
-		{}
-
-		Node* prev;
-		T data;
-		Node* next;
-
-		bool operator == (const Node& other) const
-		{
-			return &data == &other.data;
-		}
-
-	};
 };
 
 _COX_END

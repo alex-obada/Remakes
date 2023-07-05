@@ -17,7 +17,7 @@ void TestVector();
 
 int main()
 {
-    TestTimer();
+    TestList();
     return 0;
 }
 
@@ -41,30 +41,30 @@ void TestList()
 
         for (auto it = list.cbegin(); it != list.cend(); ++it)
         {
+            //*it = 2; // error
             std::cout << *it << ' ';
         }
         std::cout << std::endl;
 
     };
 
-    List<int> l = { 1, 2, 3, 4, 31245 };
+    List<int> l = { 1, 2, 3, 4, 20 };
     l.push_back(2);
     l.push_back(3);
     l.push_back(5);
     l.push_back(7);
 
-    //auto i = --l.end();
+    PrintList(l);
+    //auto i = l.cbegin();
     //l.erase(i);
 
-    std::list<int> a = { 2, 3, 5, 8 };
+
+
+
+
+    /*std::list<int> a = { 2, 3, 5, 8 };
     auto it = a.end();
-    std::cout << (--it).operator*();;
-
-
-    //PrintList(l);
-
-
-
+    std::cout << (--it).operator*();;*/
 
 
 

@@ -7,6 +7,7 @@
 #include "std-remakes/uniqptr.h"
 #include "std-remakes/vector.h"
 #include <list>
+#include <vector>
 
 using namespace cox;
 
@@ -17,18 +18,30 @@ void TestVector();
 
 int main()
 {
-    TestList();
+    TestVector();
     return 0;
 }
 
 void TestVector()
 {
-    vector<int> a;
+    vector<int> c;
+    std::vector<int> a;
+
+
+    c.push_back(5);
+    c.emplace_back(2);
+    c.emplace_back(3);
+    c.emplace_back(9);
+    c.pop_back();
+    for (int i = 0; i < c.size(); ++i)
+        std::cout << c[i] << ' ';
+    c.clear();
+    
 }
 
 void TestTimer()
 {
-    ScopedTimer t("pula");
+    ScopedTimer t("timer");
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
 

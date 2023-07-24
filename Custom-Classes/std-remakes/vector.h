@@ -2,6 +2,9 @@
 #define VECTOR_
 
 #include <initializer_list>
+#include <cstddef>
+#include <stdexcept>
+#include <utility>
 
 #include "../globals.h"
 
@@ -10,117 +13,200 @@ _COX_BEGIN
 template<typename T>
 class vector {
 public:
-    using value_type = T;
-    using pointer = T*;
-    using reference = T&;
-    using const_reference = T const&;
-    using size_type = size_t;
-    //using iterator =
-    //using const_iterator =
-    //using reverse_iterator =
-    //using const_reverse_iterator =
+    using value_type                = T;
+    using pointer                   = T*;
+    using reference                 = T&;
+    using const_reference           = T const&;
+    using size_type                 = size_t;
+    //using iterator                =
+    //using const_iterator          =
+    //using reverse_iterator        =
+    //using const_reverse_iterator  =
 
-    vector() : n{ 0 }, cap{ 0 }, ptr{ nullptr }
-    {}
+    vector() : m_size{ 0 }, m_capacity{ 2 }, m_ptr{ new T[2]} {}
 
     vector(size_type count, const_reference value = T())
-        : n{ count }, cap{ count }, ptr{ new T[size] }
+        : m_size{ count }, m_capacity{ count }, m_ptr{ new T[count] }
     {
-        for (size_type i = 0; i < size(); ++i)
-            ptr[i] = value;
+        for (size_type i = 0; i < m_size; ++i)
+            m_ptr[i] = value;
     }
 
     vector(vector const& other) 
-        : n{ other.size }, cap{ other.capacity }, ptr{ new T[capacity] }
+        : m_size{ other.m_size }, m_capacity{ other.m_capacity }, m_ptr{ new T[m_capacity] }
     {
-        for (size_type i = 0; i < size(); ++i)
-            ptr[i] = other[i];
+        for (size_type i = 0; i < m_size; ++i)
+            m_ptr[i] = other[i];
     }
 
     vector(vector&& other)
-        : n{ other.size }, cap{ other.capacity }, ptr{ other.ptr }
+        : m_size{ other.m_size }, m_capacity{ other.m_capacity }, m_ptr{ other.m_ptr }
     {
-        other.cap = other.n = 0;
-        other.ptr = nullptr;
+        other.m_capacity = other.m_size = 0;
+        other.m_ptr = nullptr;
     }
 
     vector& operator = (vector const& other)
     {
-        n = other.n;
-        cap = other.cap;
-        ptr = new T[cap];
+        if (*this == other)
+            return *this;
 
-        for (size_type i = 0; i < size(); ++i)
-            ptr[i] = other[i];
+        m_size = other.m_size;
+        m_capacity = other.m_capacity;
+        m_ptr = new T[m_capacity];
+
+        for (size_type i = 0; i < m_size; ++i)
+            m_ptr[i] = other[i];
+
+        return *this;
     }
 
     vector& operator = (vector&& other)
     {
-        n = other.n;
-        cap = other.cap;
-        ptr = other.ptr;
+        if (*this == other)
+            return *this;
 
-        other.cap = other.n = 0;
-        other.ptr = nullptr;
+        m_size = other.m_size;
+        m_capacity = other.m_capacity;
+        m_ptr = other.m_ptr;
+
+        other.m_capacity = other.m_size = 0;
+        other.m_ptr = nullptr;
+
+        return *this;
     }
 
-    ~vector()
+    ~vector() { delete[] m_ptr; }
+
+    /*
+        Element access
+    */
+
+    reference operator[](size_type index) { return m_ptr[index]; }
+    const_reference operator[](size_type index) const { return m_ptr[index]; }
+
+    reference at(size_type index)
     {
-        delete[] ptr;
+        if (index >= m_size)
+            throw std::out_of_range();
+
+        return m_ptr[index];
     }
 
-    reference operator[](size_type index)
+    const_reference at(size_type index) const
     {
-        return ptr[index];
+        if (index >= m_size)
+            throw std::out_of_range();
+
+        return m_ptr[index];
     }
 
-    const_reference operator[](size_type index) const
+    T* data() { return m_ptr; }
+    const T* data() const { return m_ptr; }
+
+    reference front() { return m_ptr[0]; }
+    const_reference front() const { return m_ptr[0]; }
+
+    reference back() { return m_ptr[m_size - 1]; }
+    const_reference back() const { return m_ptr[m_size - 1]; }
+
+    /*
+        Capacity
+    */
+
+    bool empty() const noexcept { return m_size == 0; }
+    size_type capacity() const noexcept { return m_capacity; }
+    size_type size() const noexcept { return m_size; }
+
+    /*
+        Modifiers
+    */
+
+    void push_back(const_reference x)
     {
-        return ptr[index];
+        if (m_capacity < m_size + 1)
+            reserve(m_capacity * 2);
+
+        m_ptr[m_size++] = x;
     }
+
+    void push_back(T&& x)
+    {
+        if (m_capacity < m_size + 1)
+            reserve(m_capacity * 2);
+
+        m_ptr[m_size++] = std::move(x);
+    }
+
+    template<typename... Args>
+    reference emplace_back(Args&&... args)
+    {
+        if (m_capacity < m_size + 1)
+            reserve(m_capacity * 2);
+
+        new(&m_ptr[m_size++]) T(std::forward<Args>(args)...);    
+        return back();
+    }
+
+    void clear() 
+    {
+        delete[] m_ptr;
+        m_ptr = nullptr;
+        m_size = m_capacity = 0;
+    }
+
+    void pop_back()
+    {
+        if (m_size <= 0)
+            return;
+
+        m_size--;
+        if ( 2 * m_size <= m_capacity)
+            shrink_to_fit();
+    }
+
+    void swap(vector& other) 
+    {
+        std::swap(m_ptr, other.m_ptr);
+        std::swap(m_size, other.m_size);
+        std::swap(m_capacity, other.m_capacity);
+    }
+
+    // Allocation
 
     void reserve(size_type newCapacity)
     {
-        if (newCapacity < capacity())
+        if (newCapacity < m_capacity)
             return;
 
         pointer newPtr = new T[newCapacity];
-        for (size_type i = 0; i < size(); ++i)
-            newPtr[i] = ptr[i];
+        for (size_type i = 0; i < m_size; ++i)
+            newPtr[i] = std::move(m_ptr[i]);
         
-        delete[] ptr;
-        ptr = newPtr;
-        cap = newCapacity;
+        delete[] m_ptr;
+        m_ptr = newPtr;
+        m_capacity = newCapacity;
     }
 
     void shrink_to_fit()
     {
-        if (capacity() == size())
+        if (m_capacity == m_size)
             return;
 
-        pointer newPtr = new T[size()];
-        for (size_type i = 0; i < size(); ++i)
-            newPtr[i] = ptr[i];
+        pointer newPtr = new T[m_size];
+        for (size_type i = 0; i < m_size; ++i)
+            newPtr[i] = std::move(m_ptr[i]);
 
-        delete[] ptr;
-        ptr = newPtr;
-        cap = size;
+        delete[] m_ptr;
+        m_ptr = newPtr;
+        m_capacity = m_size;
     }
 
-    size_type capacity() const noexcept
-    {
-        return cap;
-    }
-
-    size_type size() const noexcept
-    {
-        return n;
-    }
 
 private:
-    size_t n;
-    size_t cap;
-    T* ptr;
+    size_t m_size = 0;
+    size_t m_capacity = 0;
+    T* m_ptr;
 };
 
 _COX_END

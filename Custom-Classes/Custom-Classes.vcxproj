@@ -30,6 +30,7 @@
     <ClInclude Include="std-remakes\timer.h" />
     <ClInclude Include="std-remakes\uniqptr.h" />
     <ClInclude Include="std-remakes\vector.h" />
+    <ClInclude Include="std-remakes\vector_iterator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

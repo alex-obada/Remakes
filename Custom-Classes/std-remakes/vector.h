@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "../globals.h"
+#include "vector_iterator.h"
 
 _COX_BEGIN
 
@@ -18,10 +19,10 @@ public:
     using reference                 = T&;
     using const_reference           = T const&;
     using size_type                 = size_t;
-    //using iterator                =
-    //using const_iterator          =
-    //using reverse_iterator        =
-    //using const_reverse_iterator  =
+    using iterator                  = _Vector_Iter<vector, T>;
+    // using const_iterator            = _Vector_Iter<vector, const T>;
+    // using reverse_iterator          = std::reverse_iterator<iterator>;
+    // using const_reverse_iterator    = std::reverse_iterator<const_iterator>;
 
     vector() : m_size{ 0 }, m_capacity{ 2 }, m_ptr{ new T[2]} {}
 
@@ -78,6 +79,8 @@ public:
 
     ~vector() { delete[] m_ptr; }
 
+    bool operator==(const vector& other) const = default;
+
     /*
         Element access
     */
@@ -88,7 +91,7 @@ public:
     reference at(size_type index)
     {
         if (index >= m_size)
-            throw std::out_of_range();
+            throw std::out_of_range("Index is out of range");
 
         return m_ptr[index];
     }
@@ -96,7 +99,7 @@ public:
     const_reference at(size_type index) const
     {
         if (index >= m_size)
-            throw std::out_of_range();
+            throw std::out_of_range("Index is out of range");
 
         return m_ptr[index];
     }
@@ -117,6 +120,17 @@ public:
     bool empty() const noexcept { return m_size == 0; }
     size_type capacity() const noexcept { return m_capacity; }
     size_type size() const noexcept { return m_size; }
+
+    /*
+        Iterators
+    */
+
+    iterator begin() { return iterator(*this, m_ptr); }
+    iterator end() { return iterator(*this, m_ptr + m_size); }
+
+    // reverse_iterator rbegin() { return reverse_iterator(*this, m_ptr); }
+    // reverse_iterator rend() { return reverse_iterator(*this, m_ptr + m_size); }
+
 
     /*
         Modifiers
@@ -201,7 +215,7 @@ public:
         m_ptr = newPtr;
         m_capacity = m_size;
     }
-
+    
 
 private:
     size_t m_size = 0;

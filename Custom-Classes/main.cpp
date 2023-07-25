@@ -33,8 +33,9 @@ void TestVector()
     c.emplace_back(3);
     c.emplace_back(9);
     c.pop_back();
-    for (int i = 0; i < c.size(); ++i)
-        std::cout << c[i] << ' ';
+    
+    for (auto it = c.begin(); it != c.end(); ++it)
+        std::cout << *it << ' ';
     c.clear();
     
 }

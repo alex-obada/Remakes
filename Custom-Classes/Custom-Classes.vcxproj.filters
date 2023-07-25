@@ -48,6 +48,9 @@
     <ClInclude Include="std-remakes\list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="std-remakes\vector_iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="random-classes\fractie.cpp">

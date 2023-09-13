@@ -8,6 +8,12 @@ _COX_BEGIN
 template<template <typename> typename Container, typename T>
 class _Vector_Iter {
 public:
+    using value_type = Container<T>::value_type;     
+    using pointer    = Container<T>::pointer;
+    using reference  = Container<T>::reference;
+    using size_type  = Container<T>::size_type;
+    
+public:
     _Vector_Iter(Container<T>& ref, T* ptr)
         : m_ref(ref), m_ptr(ptr)
     {}

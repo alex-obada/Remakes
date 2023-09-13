@@ -88,12 +88,6 @@ unique_ptr<T> make_unique(Args&&... args)
     return unique_ptr(new T(args...));
 }
 
-template<typename T>
-unique_ptr<T> make_unique()
-{
-    return unique_ptr(new T);
-}
-
 _COX_END
 
 #endif // !UNIQUE_PTR_

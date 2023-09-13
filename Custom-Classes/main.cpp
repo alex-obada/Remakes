@@ -15,10 +15,11 @@ void TestRandom();
 void TestList();
 void TestTimer();
 void TestVector();
+void TestUniquePtr();
 
 int main()
 {
-    TestVector();
+    TestUniquePtr();
     return 0;
 }
 
@@ -39,6 +40,14 @@ void TestVector()
     c.clear();
     
 }
+
+void TestUniquePtr()
+{
+    using Type = std::pair<int, std::string>;
+    unique_ptr<Type> ptr = make_unique<Type>(20, "Marcelo");
+    std::cout << ptr->first << ' ' << ptr->second << '\n';
+}
+
 
 void TestTimer()
 {
